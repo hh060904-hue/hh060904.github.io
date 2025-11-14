@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameBuddy - 游戏陪玩自助下单平台</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --accent: #fd79a8;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 头部样式 */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* 优化Logo样式 */
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-image {
+            height: 42px;
+            width: auto;
+            margin-right: 12px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-image {
+            transform: scale(1.05);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 20px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 英雄区域样式 */
+        .hero {
+            padding: 80px 0;
+            background: linear-gradient(rgba(108, 92, 231, 0.9), rgba(162, 155, 254, 0.9)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        /* 服务区域样式 */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: #636e72;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .service-content {
+            padding: 25px;
+        }
+
+        .service-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+
+        .service-content p {
+            color: #636e72;
+            margin-bottom: 20px;
+        }
+
+        .service-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .service-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+
+        /* 陪玩师样式 */
+        .players-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .player-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .player-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .player-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .player-rank {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: var(--warning);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .player-info {
+            padding: 20px;
+        }
+
+        .player-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .player-info p {
+            color: #636e72;
+            margin-bottom: 15px;
+        }
+
+        .player-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #636e72;
+        }
+
+        /* 下单区域样式 */
+        .order-section {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .order-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .order-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #dfe6e9;
+            z-index: 1;
+        }
+
+        .step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background: #dfe6e9;
+            color: #636e72;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-weight: 700;
+        }
+
+        .step.active .step-number {
+            background: var(--primary);
+            color: white;
+        }
+
+        .step.completed .step-number {
+            background: var(--success);
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.9rem;
+            color: #636e72;
+        }
+
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .order-form {
+            display: none;
+        }
+
+        .order-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2);
+            outline: none;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .order-summary {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #ddd;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        .order-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn-large {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+        }
+
+        /* 确认订单页面样式 */
+        .order-confirm {
+            display: none;
+        }
+
+        .order-confirm.active {
+            display: block;
+        }
+
+        .confirm-details {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .confirm-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .confirm-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .confirm-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .confirm-value {
+            color: #636e72;
+        }
+
+        .confirm-total {
+            background: var(--primary);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .confirm-total h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .confirm-total .amount {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .payment-options {
+            margin-bottom: 30px;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-option:hover {
+            border-color: var(--primary);
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
+            background-color: rgba(108, 92, 231, 0.05);
+        }
+
+        .payment-option input {
+            margin-right: 15px;
+        }
+
+        .payment-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        .payment-info {
+            flex: 1;
+        }
+
+        .payment-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .payment-info p {
+            color: #636e72;
+            font-size: 0.9rem;
+        }
+
+        /* 底部样式 */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: #b2bec3;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-column ul li a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #b2bec3;
+            font-size: 0.9rem;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            nav ul li {
+                margin: 5px 10px;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .order-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .order-steps::before {
+                display: none;
+            }
+            
+            /* 移动端调整Logo大小 */
+            .logo-image {
+                height: 36px;
+            }
+        }
+        
+        /* 小屏幕设备 */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.5rem;
+            }
+            
+            .logo-image {
+                height: 32px;
+                margin-right: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部导航 -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <img src="dbc561cab7a8b1ad40562c5807f7abab.png" alt="QYclub" class="logo-image">
+                       <style>
+                        img{
+                            width:170px;
+                            height:50px;
+                        }
+                       </style>
+                    </svg>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#" class="active">首页</a></li>
+                        <li><a href="#services">服务</a></li>
+                        <li><a href="#players">热门陪玩</a></li>
+                        <li><a href="#order">立即下单</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 英雄区域 -->
+    <section class="hero">
+        <div class="container">
+            <h1>专业游戏陪玩，提升你的游戏体验</h1>
+            <p>我们拥有数百名认证游戏高手，覆盖英雄联盟、王者荣耀、绝地求生等热门游戏，随时随地为你提供优质陪玩服务。</p>
+            <div class="hero-buttons">
+                <!-- 修改：添加id以便JavaScript定位 -->
+                <button class="btn btn-primary btn-large" id="hero-order-btn">立即下单</button>
+                <button class="btn btn-outline btn-large">了解更多</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 服务区域 -->
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-title">
+                <h2>我们的服务</h2>
+                <p>多种游戏陪玩服务，满足你的不同需求</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1534423861386-85a16f5d13fd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80');"></div>
+                    <div class="service-content">
+                        <h3>排位陪玩</h3>
+                        <p>专业高手带你上分，轻松提升段位，解决排位难题。</p>
+                        <div class="service-meta">
+                            <span><i class="fas fa-clock"></i> 按小时计费</span>
+                            <span><i class="fas fa-gamepad"></i> 多游戏支持</span>
+                        </div>
+                        <div class="service-price">¥50/小时</div>
+                        <!-- 添加data-service属性 -->
+                        <button class="btn btn-primary select-service-btn" style="width: 100%;" data-service="ranked">选择服务</button>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1542751110-97427bbecf20?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1084&q=80');"></div>
+                    <div class="service-content">
+                        <h3>娱乐陪玩</h3>
+                        <p>轻松愉快的游戏体验，陪你聊天、娱乐，享受游戏乐趣。</p>
+                        <div class="service-meta">
+                            <span><i class="fas fa-clock"></i> 按小时计费</span>
+                            <span><i class="fas fa-gamepad"></i> 多游戏支持</span>
+                        </div>
+                        <div class="service-price">¥30/小时</div>
+                        <!-- 添加data-service属性 -->
+                        <button class="btn btn-primary select-service-btn" style="width: 100%;" data-service="entertainment">选择服务</button>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-img" style="background-image: url('https://images.unsplash.com/photo-1511512578047-dfb367046420?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1171&q=80');"></div>
+                    <div class="service-content">
+                        <h3>教学陪玩</h3>
+                        <p>一对一专业指导，提升游戏技巧，从新手变大神。</p>
+                        <div class="service-meta">
+                            <span><i class="fas fa-clock"></i> 按小时计费</span>
+                            <span><i class="fas fa-gamepad"></i> 多游戏支持</span>
+                        </div>
+                        <div class="service-price">¥80/小时</div>
+                        <!-- 添加data-service属性 -->
+                        <button class="btn btn-primary select-service-btn" style="width: 100%;" data-service="teaching">选择服务</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 陪玩师区域 -->
+    <section class="section" id="players">
+        <div class="container">
+            <div class="section-title">
+                <h2>热门陪玩师</h2>
+                <p>专业认证的游戏高手，为你提供优质服务</p>
+            </div>
+            <div class="players-grid">
+                <div class="player-card">
+                    <div class="player-img" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80');">
+                        <div class="player-rank">王者段位</div>
+                    </div>
+                    <div class="player-info">
+                        <h3>游戏小王子</h3>
+                        <p>英雄联盟 / 王者荣耀</p>
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">4.9</div>
+                                <div class="stat-label">评分</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">1286</div>
+                                <div class="stat-label">订单</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">98%</div>
+                                <div class="stat-label">胜率</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">立即预约</button>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <div class="player-img" style="background-image: url('https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80');">
+                        <div class="player-rank">最强王者</div>
+                    </div>
+                    <div class="player-info">
+                        <h3>电竞小仙女</h3>
+                        <p>王者荣耀 / 和平精英</p>
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">4.8</div>
+                                <div class="stat-label">评分</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">964</div>
+                                <div class="stat-label">订单</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">95%</div>
+                                <div class="stat-label">胜率</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">立即预约</button>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <div class="player-img" style="background-image: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80');">
+                        <div class="player-rank">宗师段位</div>
+                    </div>
+                    <div class="player-info">
+                        <h3>绝地枪神</h3>
+                        <p>绝地求生 / APEX英雄</p>
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">4.9</div>
+                                <div class="stat-label">评分</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">752</div>
+                                <div class="stat-label">订单</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">96%</div>
+                                <div class="stat-label">吃鸡率</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">立即预约</button>
+                    </div>
+                </div>
+                <div class="player-card">
+                    <div class="player-img" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80');">
+                        <div class="player-rank">王者段位</div>
+                    </div>
+                    <div class="player-info">
+                        <h3>中路法王</h3>
+                        <p>英雄联盟 / DOTA2</p>
+                        <div class="player-stats">
+                            <div class="stat">
+                                <div class="stat-value">4.7</div>
+                                <div class="stat-label">评分</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">638</div>
+                                <div class="stat-label">订单</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">94%</div>
+                                <div class="stat-label">胜率</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="width: 100%;">立即预约</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 下单区域 -->
+    <section class="section" id="order">
+        <div class="container">
+            <div class="section-title">
+                <h2>立即下单</h2>
+                <p>简单四步，轻松享受专业陪玩服务</p>
+            </div>
+            <div class="order-section">
+                <div class="order-steps">
+                    <div class="step completed">
+                        <div class="step-number">1</div>
+                        <div class="step-label">选择服务</div>
+                    </div>
+                    <div class="step active" id="step2-indicator">
+                        <div class="step-number">2</div>
+                        <div class="step-label">填写信息</div>
+                    </div>
+                    <div class="step" id="step3-indicator">
+                        <div class="step-number">3</div>
+                        <div class="step-label">确认订单</div>
+                    </div>
+                    <div class="step" id="step4-indicator">
+                        <div class="step-number">4</div>
+                        <div class="step-label">完成支付</div>
+                    </div>
+                </div>
+
+                <!-- 步骤2：填写信息 -->
+                <form id="orderForm">
+                    <div class="order-form active" id="step2">
+                        <h3 style="margin-bottom: 20px;">填写订单信息</h3>
+                        <div class="form-group">
+                            <label for="game">选择游戏</label>
+                            <select class="form-control" id="game" required>
+                                <option value="">请选择游戏</option>
+                                <option value="lol">英雄联盟</option>
+                                <option value="honor">王者荣耀</option>
+                                <option value="pubg">绝地求生</option>
+                                <option value="apex">APEX英雄</option>
+                                <option value="dota2">DOTA2</option>
+                                <option value="valorant">无畏契约</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="serviceType">服务类型</label>
+                            <select class="form-control" id="serviceType" required>
+                                <option value="">请选择服务类型</option>
+                                <option value="ranked">排位陪玩</option>
+                                <option value="entertainment">娱乐陪玩</option>
+                                <option value="teaching">教学陪玩</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="hours">服务时长（小时）</label>
+                                <input type="number" class="form-control" id="hours" min="1" max="10" value="1" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="playerLevel">期望陪玩师段位</label>
+                                <select class="form-control" id="playerLevel" required>
+                                    <option value="any">任意段位</option>
+                                    <option value="diamond">钻石及以上</option>
+                                    <option value="master">大师及以上</option>
+                                    <option value="grandmaster">宗师及以上</option>
+                                    <option value="challenger">王者段位</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="gameAccount">游戏账号（区服+ID）</label>
+                            <input type="text" class="form-control" id="gameAccount" placeholder="例如：艾欧尼亚 - 游戏小王子" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contact">联系方式</label>
+                            <input type="text" class="form-control" id="contact" placeholder="QQ/微信/手机号" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="notes">备注要求（可选）</label>
+                            <textarea class="form-control" id="notes" rows="3" placeholder="例如：希望陪玩师擅长打野位置..."></textarea>
+                        </div>
+
+                        <div class="order-summary">
+                            <h4 style="margin-bottom: 15px;">订单摘要</h4>
+                            <div class="summary-item">
+                                <span>服务类型：</span>
+                                <span id="summary-service">未选择</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>游戏：</span>
+                                <span id="summary-game">未选择</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>时长：</span>
+                                <span id="summary-hours">1 小时</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>单价：</span>
+                                <span id="summary-price">¥0</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>总计：</span>
+                                <span id="summary-total">¥0</span>
+                            </div>
+                        </div>
+
+                        <div class="order-actions">
+                            <button type="button" class="btn btn-outline" id="prev-step2">上一步</button>
+                            <button type="button" class="btn btn-primary" id="next-to-confirm">下一步</button>
+                        </div>
+                    </div>
+                </form>
+
+                <!-- 步骤3：确认订单 -->
+                <div class="order-confirm" id="step3">
+                    <h3 style="margin-bottom: 20px;">确认订单信息</h3>
+                    
+                    <div class="confirm-details">
+                        <div class="confirm-row">
+                            <span class="confirm-label">服务类型：</span>
+                            <span class="confirm-value" id="confirm-service">排位陪玩</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">游戏：</span>
+                            <span class="confirm-value" id="confirm-game">英雄联盟</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">服务时长：</span>
+                            <span class="confirm-value" id="confirm-hours">1 小时</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">期望陪玩师段位：</span>
+                            <span class="confirm-value" id="confirm-level">任意段位</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">游戏账号：</span>
+                            <span class="confirm-value" id="confirm-account">艾欧尼亚 - 游戏小王子</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">联系方式：</span>
+                            <span class="confirm-value" id="confirm-contact">138****5678</span>
+                        </div>
+                        <div class="confirm-row">
+                            <span class="confirm-label">备注要求：</span>
+                            <span class="confirm-value" id="confirm-notes">希望陪玩师擅长打野位置</span>
+                        </div>
+                    </div>
+
+                    <div class="confirm-total">
+                        <h3>订单总金额</h3>
+                        <div class="amount" id="confirm-total">¥50</div>
+                    </div>
+
+                    <div class="payment-options">
+                        <h4 style="margin-bottom: 15px;">选择支付方式</h4>
+                        
+                        <div class="payment-option selected">
+                            <input type="radio" name="payment" id="wechat-pay" checked>
+                            <div class="payment-icon">
+                                <i class="fab fa-weixin"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>微信支付</h4>
+                                <p>推荐使用微信客户端支付</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-option">
+                            <input type="radio" name="payment" id="alipay">
+                            <div class="payment-icon">
+                                <i class="fab fa-alipay"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>支付宝</h4>
+                                <p>推荐使用支付宝客户端支付</p>
+                            </div>
+                        </div>
+                        
+                        <div class="payment-option">
+                            <input type="radio" name="payment" id="bank-card">
+                            <div class="payment-icon">
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                            <div class="payment-info">
+                                <h4>银行卡支付</h4>
+                                <p>支持储蓄卡和信用卡</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-actions">
+                        <button type="button" class="btn btn-outline" id="prev-to-form">上一步</button>
+                        <button type="button" class="btn btn-primary" id="confirm-payment">确认支付</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部区域 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>GameBuddy</h3>
+                    <p>专业游戏陪玩平台，致力于为玩家提供最优质的游戏陪伴体验。</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-weibo"></i></a>
+                        <a href="#"><i class="fab fa-weixin"></i></a>
+                        <a href="#"><i class="fab fa-qq"></i></a>
+                        <a href="#"><i class="fab fa-bilibili"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>热门游戏</h3>
+                    <ul>
+                        <li><a href="#">英雄联盟</a></li>
+                        <li><a href="#">王者荣耀</a></li>
+                        <li><a href="#">绝地求生</a></li>
+                        <li><a href="#">APEX英雄</a></li>
+                        <li><a href="#">DOTA2</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>服务类型</h3>
+                    <ul>
+                        <li><a href="#">排位陪玩</a></li>
+                        <li><a href="#">娱乐陪玩</a></li>
+                        <li><a href="#">教学陪玩</a></li>
+                        <li><a href="#">代练服务</a></li>
+                        <li><a href="#">游戏代打</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><i class="fas fa-envelope"></i> hh060904@163.com</li>
+                        <li><i class="fas fa-phone"></i> 18041444840</li>
+                        
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 QYclub 游戏陪玩平台. 保留所有权利.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 简单的表单交互逻辑
+        document.addEventListener('DOMContentLoaded', function() {
+            // 更新订单摘要
+            function updateOrderSummary() {
+                const serviceType = document.getElementById('serviceType').value;
+                const game = document.getElementById('game').value;
+                const hours = document.getElementById('hours').value;
+                
+                let price = 0;
+                if (serviceType === 'ranked') price = 50;
+                else if (serviceType === 'entertainment') price = 30;
+                else if (serviceType === 'teaching') price = 80;
+                
+                const serviceNames = {
+                    'ranked': '排位陪玩',
+                    'entertainment': '娱乐陪玩',
+                    'teaching': '教学陪玩'
+                };
+                
+                const gameNames = {
+                    'lol': '英雄联盟',
+                    'honor': '王者荣耀',
+                    'pubg': '绝地求生',
+                    'apex': 'APEX英雄',
+                    'dota2': 'DOTA2',
+                    'valorant': '无畏契约'
+                };
+                
+                document.getElementById('summary-service').textContent = serviceNames[serviceType] || '未选择';
+                document.getElementById('summary-game').textContent = gameNames[game] || '未选择';
+                document.getElementById('summary-hours').textContent = hours + ' 小时';
+                document.getElementById('summary-price').textContent = '¥' + price + '/小时';
+                document.getElementById('summary-total').textContent = '¥' + (price * hours);
+            }
+            
+            // 更新确认订单页面
+            function updateConfirmPage() {
+                const serviceType = document.getElementById('serviceType').value;
+                const game = document.getElementById('game').value;
+                const hours = document.getElementById('hours').value;
+                const playerLevel = document.getElementById('playerLevel').value;
+                const gameAccount = document.getElementById('gameAccount').value;
+                const contact = document.getElementById('contact').value;
+                const notes = document.getElementById('notes').value;
+                
+                let price = 0;
+                if (serviceType === 'ranked') price = 50;
+                else if (serviceType === 'entertainment') price = 30;
+                else if (serviceType === 'teaching') price = 80;
+                
+                const serviceNames = {
+                    'ranked': '排位陪玩',
+                    'entertainment': '娱乐陪玩',
+                    'teaching': '教学陪玩'
+                };
+                
+                const gameNames = {
+                    'lol': '英雄联盟',
+                    'honor': '王者荣耀',
+                    'pubg': '绝地求生',
+                    'apex': 'APEX英雄',
+                    'dota2': 'DOTA2',
+                    'valorant': '无畏契约'
+                };
+                
+                const levelNames = {
+                    'any': '任意段位',
+                    'diamond': '钻石及以上',
+                    'master': '大师及以上',
+                    'grandmaster': '宗师及以上',
+                    'challenger': '王者段位'
+                };
+                
+                document.getElementById('confirm-service').textContent = serviceNames[serviceType] || '未选择';
+                document.getElementById('confirm-game').textContent = gameNames[game] || '未选择';
+                document.getElementById('confirm-hours').textContent = hours + ' 小时';
+                document.getElementById('confirm-level').textContent = levelNames[playerLevel] || '任意段位';
+                document.getElementById('confirm-account').textContent = gameAccount || '未填写';
+                document.getElementById('confirm-contact').textContent = contact || '未填写';
+                document.getElementById('confirm-notes').textContent = notes || '无';
+                document.getElementById('confirm-total').textContent = '¥' + (price * hours);
+            }
+            
+            // 监听表单变化
+            document.getElementById('serviceType').addEventListener('change', updateOrderSummary);
+            document.getElementById('game').addEventListener('change', updateOrderSummary);
+            document.getElementById('hours').addEventListener('input', updateOrderSummary);
+            
+            // 初始化订单摘要
+            updateOrderSummary();
+            
+            // 导航平滑滚动
+            document.querySelectorAll('nav a').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    if (targetId.startsWith('#')) {
+                        const targetElement = document.querySelector(targetId);
+                        if (targetElement) {
+                            window.scrollTo({
+                                top: targetElement.offsetTop - 80,
+                                behavior: 'smooth'
+                            });
+                        }
+                    }
+                });
+            });
+            
+            // 首页"立即下单"按钮点击事件
+            document.getElementById('hero-order-btn').addEventListener('click', function() {
+                const targetElement = document.getElementById('order');
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+            
+            // 服务卡片"选择服务"按钮点击事件
+            document.querySelectorAll('.select-service-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    // 获取服务类型
+                    const serviceType = this.getAttribute('data-service');
+                    
+                    // 跳转到下单页面
+                    const targetElement = document.getElementById('order');
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                        
+                        // 设置服务类型下拉框的值
+                        document.getElementById('serviceType').value = serviceType;
+                        
+                        // 更新订单摘要
+                        updateOrderSummary();
+                    }
+                });
+            });
+            
+            // 步骤2到步骤3的切换
+            document.getElementById('next-to-confirm').addEventListener('click', function() {
+                // 验证表单
+                const game = document.getElementById('game').value;
+                const serviceType = document.getElementById('serviceType').value;
+                const gameAccount = document.getElementById('gameAccount').value;
+                const contact = document.getElementById('contact').value;
+                
+                if (!game || !serviceType || !gameAccount || !contact) {
+                    alert('请填写所有必填字段');
+                    return;
+                }
+                
+                // 更新确认页面内容
+                updateConfirmPage();
+                
+                // 切换步骤
+                document.getElementById('step2').classList.remove('active');
+                document.getElementById('step3').classList.add('active');
+                
+                // 更新步骤指示器
+                document.getElementById('step2-indicator').classList.remove('active');
+                document.getElementById('step2-indicator').classList.add('completed');
+                document.getElementById('step3-indicator').classList.add('active');
+            });
+            
+            // 步骤3返回步骤2
+            document.getElementById('prev-to-form').addEventListener('click', function() {
+                // 切换步骤
+                document.getElementById('step2').classList.add('active');
+                document.getElementById('step3').classList.remove('active');
+                
+                // 更新步骤指示器
+                document.getElementById('step2-indicator').classList.add('active');
+                document.getElementById('step2-indicator').classList.remove('completed');
+                document.getElementById('step3-indicator').classList.remove('active');
+            });
+            
+            // 支付方式选择
+            document.querySelectorAll('.payment-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // 移除所有选项的选中状态
+                    document.querySelectorAll('.payment-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                        opt.querySelector('input').checked = false;
+                    });
+                    
+                    // 设置当前选项为选中状态
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                });
+            });
+            
+            // 确认支付
+            document.getElementById('confirm-payment').addEventListener('click', function() {
+                alert('支付成功！我们将尽快为您安排陪玩师。');
+                // 这里可以添加实际的支付处理逻辑
+            });
+        });
+    </script>
+</body>
+</html>
